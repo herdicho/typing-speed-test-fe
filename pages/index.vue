@@ -48,7 +48,6 @@ export default class Index extends Vue {
 
   timerElement : any = ""
   scoreElement : any = ""
-  RANDOM_QUOTE_API_URL : any = ""
   quoteDisplayElement : any = ""
   quoteInputElement : any = ""
 
@@ -122,13 +121,28 @@ export default class Index extends Vue {
     this.quoteInputElement.value = ''
   }
 
-  startTimer() : void {
-    let time = 90
+  startTimer() {
+    let time = 5
     this.timer = time
     
     setInterval(() => {
         time -= 1
         this.timer = time
+        if (time < 0) {
+          this.timer = 0
+        }
+    }, 1000)
+  }
+
+  checkTimer() {
+     setInterval(() => {
+       console.log(this.timer, 0, this.timer == 0)
+        if (this.timer == 0) {
+          console.log("times up")
+          const message = "score : " + this.score
+          alert(message)
+          this.startTimer()
+        }
     }, 1000)
   }
 
@@ -139,6 +153,7 @@ export default class Index extends Vue {
     this.quoteInputElement = document.getElementById('inputText')
     this.startTimer()
     this.outputWord()
+    this.checkTimer()
   }
 }
 </script>
