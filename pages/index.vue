@@ -15,13 +15,19 @@
             <div class="grid justify-items-center h-20"> 
                 <input v-on:keyup="checkAnswer($event)" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline font-mono" id="inputText" type="text" placeholder="Type to Start ....">
             </div>   
+
+            <div class="grid justify-items-center h-20"> 
+              <button @click="startGame()" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded text-mono">
+                Click to start !!!
+              </button>
+            </div>
     
             <div class="grid justify-items-center h-20"> 
-                <div class="timer m-auto text-5xl" id="timer"> {{timer}} </div>
+                <div class="font-mono timer m-auto text-5xl" id="timer"> {{timer}} </div>
             </div>
 
             <div class="grid justify-items-center h-20"> 
-                <div class="score m-auto text-5xl" id="score"> 0 </div>
+                <div class="font-mono score m-auto text-5xl" id="score"> 0 </div>
             </div>
         </div>
         
@@ -46,13 +52,11 @@ export default class Index extends Vue {
     'minum',
   ]
 
-  timerElement : any = ""
   scoreElement : any = ""
   quoteDisplayElement : any = ""
   quoteInputElement : any = ""
 
-  timer : number = 0
-
+  timer : number = 0  
   word_span : string = ""
   word_question : string = ""
   word_answer : string = ""
@@ -123,37 +127,41 @@ export default class Index extends Vue {
 
   startTimer() {
     let time = 5
-    this.timer = time
-    
-    setInterval(() => {
-        time -= 1
-        this.timer = time
-        if (time < 0) {
-          this.timer = 0
-        }
+
+    const timer = setInterval(() => {
+      this.timer = time
+      console.log(time)
+      time -= 1
+      if (time == -1) {
+        const message = "score : " + this.score
+        alert(message)
+        clearInterval(timer)
+        this.resetGame()
+      } 
     }, 1000)
   }
 
-  checkTimer() {
-     setInterval(() => {
-       console.log(this.timer, 0, this.timer == 0)
-        if (this.timer == 0) {
-          console.log("times up")
-          const message = "score : " + this.score
-          alert(message)
-          this.startTimer()
-        }
-    }, 1000)
+  resetGame() {
+    this.scoreElement.innerText = 0
+    this.quoteInputElement.value = ''
+    this.quoteDisplayElement.innerHTML = ''
+    this.score = 0
+    this.global_index = 0
+    this.quoteInputElement.disabled = true
+  }
+
+  startGame() {
+    this.startTimer()
+    this.outputWord()
+    this.quoteInputElement.disabled = false
+    this.quoteInputElement.focus()
   }
 
   mounted() {
-    this.timerElement = document.getElementById('timer')
     this.scoreElement = document.getElementById('score')
     this.quoteDisplayElement = document.getElementById('textDisplay')
     this.quoteInputElement = document.getElementById('inputText')
-    this.startTimer()
-    this.outputWord()
-    this.checkTimer()
+    this.quoteInputElement.disabled = true
   }
 }
 </script>
