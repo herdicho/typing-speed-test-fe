@@ -2,32 +2,36 @@
   <div class="container md mx-auto">
 
         <div class="grid grid-cols-1 pt-24">
-            <h1 class="m-auto text-5xl font-mono"><strong> SPEED TYPING TEST </strong></h1>
+            <h1 class="m-auto text-5xl font-mono mb-6"><strong> SPEED TYPING TEST </strong></h1>
         </div> 
+
+        <div class="grid grid-cols-3 pt-20">
+          <div class="h-auto w-auto mx-auto text-5xl font-bold" id="score">
+            SCORE : 0
+          </div>
+          <div class="h-auto w-auto mx-auto text-5xl font-bold">
+            TIMER : {{timer}}
+          </div>
+          <div class="border h-auto w-auto border-black mx-auto">
+
+          </div>
+        </div>
     
         <div class="grid grid-cols-1 pt-6 w-3/4 mx-auto">
-            <div class="grid justify-items-center h-20 bg-transparent border-2 border-black px-3 min-w-3/4 min-h-3/4"> 
+            <div class="grid justify-items-center h-20 bg-transparent border-4 border-black px-3 min-w-3/4 min-h-3/4"> 
                 <div class="text-display m-auto text-md text-2xl text-gray-600 font-mono" id="textDisplay">  </div>
             </div>
         </div>
     
         <div class="grid grid-cols-2 pt-6 w-2/6 mx-auto">
-            <div class="grid justify-items-center h-20"> 
-                <input v-on:keyup="checkAnswer($event)" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline font-mono" id="inputText" type="text" placeholder="Type to Start ....">
+            <div class="grid justify-items-center h-20 mx-8 mt-8"> 
+                <input v-on:keyup="checkAnswer($event)" class="bg-transparent shadow appearance-none border-4 border-black rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline font-mono" id="inputText" type="text">
             </div>   
 
-            <div class="grid justify-items-center h-20"> 
-              <button @click="startGame()" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded text-mono">
-                Click to start !!!
+            <div class="grid justify-items-center h-20 mx-8 mt-8"> 
+              <button @click="startGame()" class="bg-transparent hover:bg-black text-black font-bold hover:text-white py-2 px-4 border-4 border-black hover:border-transparent rounded text-mono">
+                CLICK TO START !!!
               </button>
-            </div>
-    
-            <div class="grid justify-items-center h-20"> 
-                <div class="font-mono timer m-auto text-5xl" id="timer"> {{timer}} </div>
-            </div>
-
-            <div class="grid justify-items-center h-20"> 
-                <div class="font-mono score m-auto text-5xl" id="score"> 0 </div>
             </div>
         </div>
         
@@ -56,6 +60,7 @@ export default class Index extends Vue {
   quoteDisplayElement : any = ""
   quoteInputElement : any = ""
 
+  time : number = 3
   timer : number = 0  
   word_span : string = ""
   word_question : string = ""
@@ -105,7 +110,7 @@ export default class Index extends Vue {
         this.quoteInputElement.value = ''
         word_span.classList.remove('current-text')
         this.score++
-        this.scoreElement.innerText = this.score
+        this.scoreElement.innerText = `SCORE : ${this.score}`
         this.checkIsAllQuestionCorrect()
       } else {
         word_span.classList.remove('correct')
@@ -126,14 +131,12 @@ export default class Index extends Vue {
   }
 
   startTimer() {
-    let time = 5
-
+    this.timer = this.time
     const timer = setInterval(() => {
-      this.timer = time
-      console.log(time)
-      time -= 1
-      if (time == -1) {
-        const message = "score : " + this.score
+      this.time -= 1
+      this.timer = this.time
+      if (this.time == 0) {
+        const message = "SCORE : " + this.score
         alert(message)
         clearInterval(timer)
         this.resetGame()
@@ -142,10 +145,12 @@ export default class Index extends Vue {
   }
 
   resetGame() {
-    this.scoreElement.innerText = 0
+    this.timer = 0
+    this.time = 3
+    this.score = 0
+    this.scoreElement.innerText = "SCORE : " + this.score
     this.quoteInputElement.value = ''
     this.quoteDisplayElement.innerHTML = ''
-    this.score = 0
     this.global_index = 0
     this.quoteInputElement.disabled = true
   }
