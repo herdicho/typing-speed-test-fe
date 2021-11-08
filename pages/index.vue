@@ -1,6 +1,7 @@
 <template>
   <div class="container md mx-auto">
-
+        <ScoreModal :isVisible="modalVisible" :score="user_score" @cancel="modalVisible = false"/>
+        
         <div class="grid grid-cols-1 pt-24">
             <h1 class="m-auto text-5xl font-mono mb-6"><strong> SPEED TYPING TEST </strong></h1>
         </div> 
@@ -13,7 +14,6 @@
             TIMER : {{timer}}
           </div>
           <div class="border h-auto w-auto border-black mx-auto">
-
           </div>
         </div>
     
@@ -40,7 +40,12 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-@Component
+import ScoreModal from '~/components/ScoreModal.vue';
+@Component({
+    components: {
+      ScoreModal
+    }
+  })
 export default class Index extends Vue {
 
     words : Array<string> = [
@@ -67,7 +72,9 @@ export default class Index extends Vue {
   word_answer : string = ""
 
   score : number = 0 
+  user_score : number = 0
   global_index : number = 0
+  modalVisible : boolean = false
 
   checkIsAllQuestionCorrect() {
     const arrayQuote = this.quoteDisplayElement.querySelectorAll('span')
@@ -97,8 +104,8 @@ export default class Index extends Vue {
       let is_correct = true
       const splitArrayQuote = word_question.split('')
       const splitArrayValue = word_answer.replace(/\s*$/,'').split('')
-      splitArrayValue.forEach((char:any,index:any) => {
-        if (char != splitArrayQuote[index]) {
+      splitArrayQuote.forEach((char:any,index:any) => {
+        if (char != splitArrayValue[index]) {
           is_correct = false
         }
       })
@@ -136,10 +143,10 @@ export default class Index extends Vue {
       this.time -= 1
       this.timer = this.time
       if (this.time == 0) {
-        const message = "SCORE : " + this.score
-        alert(message)
+        this.user_score = this.score
         clearInterval(timer)
         this.resetGame()
+        this.modalVisible = true
       } 
     }, 1000)
   }
