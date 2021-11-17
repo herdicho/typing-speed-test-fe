@@ -17,19 +17,31 @@
           </div>
         </div>
     
-        <div class="grid grid-cols-1 pt-6 w-3/4 mx-auto">
-            <div class="grid justify-items-center h-20 bg-transparent border-4 border-black px-3 min-w-3/4 min-h-3/4"> 
-                <div class="text-display m-auto text-md text-2xl text-gray-600 font-mono" id="textDisplay">  </div>
+        <div class="grid grid-cols-1 pt-6 w-3/4 mx-auto h-20 mb-20">
+            <div class="grid justify-items-center bg-transparent border-4 border-black px-3 min-w-3/4"> 
+                <div class="text-display m-auto text-md text-2xl text-gray-600 font-mono" id="textDisplay">  HOW FAST ARE YOU ?? </div>
             </div>
         </div>
     
-        <div class="grid grid-cols-2 pt-6 w-2/6 mx-auto">
-            <div class="grid justify-items-center h-20 mx-8 mt-8"> 
-                <input v-on:keyup="checkAnswer($event)" class="bg-transparent shadow appearance-none border-4 border-black rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline font-mono" id="inputText" type="text">
+        <!-- <div class="grid grid-cols-2 pt-6 w-2/6 mx-auto">
+            <div class="grid justify-items-center h-20 mx-8"> 
+                <input v-on:keyup="checkAnswer($event)" class="bg-transparent shadow appearance-none border-4 border-black rounded w-full py-2 px-3 text-gray-700 text-4xl leading-tight focus:outline-none focus:shadow-outline font-mono my-2" id="inputText" type="text">
             </div>   
 
-            <div class="grid justify-items-center h-20 mx-8 mt-8"> 
-              <button @click="startGame()" class="bg-transparent hover:bg-black text-black font-bold hover:text-white py-2 px-4 border-4 border-black hover:border-transparent rounded text-mono">
+            <div class="grid justify-items-center h-20 mx-8"> 
+              <button @click="startGame()" class="bg-transparent hover:bg-black text-black font-bold hover:text-white py-2 px-4 border-4 border-black hover:border-transparent rounded text-mono" id="startButton">
+                CLICK TO START !!!
+              </button>
+            </div>
+        </div> -->
+
+        <div class="flex flex-row justify-center items-center">
+          <div class="mx-8"> 
+                <input v-on:keyup="checkAnswer($event)" class="h-24 w-1/2 bg-transparent shadow appearance-none border-4 border-black rounded py-2 px-3 text-gray-700 text-4xl text-center leading-tight focus:outline-none focus:shadow-outline font-mono my-2" id="inputText" type="text">
+            </div>   
+
+            <div class="mx-8"> 
+              <button @click="startGame()" class="h-20 w-30 bg-transparent hover:bg-black text-black font-bold hover:text-white py-2 px-4 border-4 border-black hover:border-transparent rounded text-mono" id="startButton">
                 CLICK TO START !!!
               </button>
             </div>
@@ -59,13 +71,16 @@ export default class Index extends Vue {
     'bunga',
     'makan',
     'minum',
+    'baca',
+    'tulis'
   ]
 
   scoreElement : any = ""
   quoteDisplayElement : any = ""
   quoteInputElement : any = ""
+  startButtonElement : any = ""
 
-  time : number = 3
+  time : number = 50
   timer : number = 0  
   word_span : string = ""
   word_question : string = ""
@@ -131,7 +146,8 @@ export default class Index extends Vue {
     this.words.forEach(word => {
       const wordSpan = document.createElement('span')
       wordSpan.innerText = word 
-      wordSpan.classList.add('mr-2')
+      wordSpan.classList.add('m-2')
+      wordSpan.classList.add('inline-block')
       this.quoteDisplayElement.appendChild(wordSpan)
     })
     this.quoteInputElement.value = ''
@@ -153,13 +169,14 @@ export default class Index extends Vue {
 
   resetGame() {
     this.timer = 0
-    this.time = 3
+    this.time = 50
     this.score = 0
     this.scoreElement.innerText = "SCORE : " + this.score
     this.quoteInputElement.value = ''
     this.quoteDisplayElement.innerHTML = ''
     this.global_index = 0
     this.quoteInputElement.disabled = true
+    this.startButtonElement.disabled = false
   }
 
   startGame() {
@@ -167,12 +184,14 @@ export default class Index extends Vue {
     this.outputWord()
     this.quoteInputElement.disabled = false
     this.quoteInputElement.focus()
+    this.startButtonElement.disabled = true
   }
 
   mounted() {
     this.scoreElement = document.getElementById('score')
     this.quoteDisplayElement = document.getElementById('textDisplay')
     this.quoteInputElement = document.getElementById('inputText')
+    this.startButtonElement = document.getElementById('startButton')
     this.quoteInputElement.disabled = true
   }
 }
@@ -198,6 +217,5 @@ export default class Index extends Vue {
 
     .current-text {
       background-color: lightblue;
-      padding: 5px;
     }
 </style>
