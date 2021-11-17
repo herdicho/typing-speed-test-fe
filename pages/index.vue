@@ -60,7 +60,7 @@ import ScoreModal from '~/components/ScoreModal.vue';
   })
 export default class Index extends Vue {
 
-    words : Array<string> = [
+  words : Array<string> = [
     'karena',
     'tidak',
     'bentuk',
@@ -115,7 +115,7 @@ export default class Index extends Vue {
     const word_answer = arrayValue
     const word_span = arrayQuote
 
-    if (event.code === 'Space') {
+    if (word_answer.length === word_question.length) {
       let is_correct = true
       const splitArrayQuote = word_question.split('')
       const splitArrayValue = word_answer.replace(/\s*$/,'').split('')
@@ -137,19 +137,21 @@ export default class Index extends Vue {
       } else {
         word_span.classList.remove('correct')
         word_span.classList.add('incorrect')
+        this.quoteInputElement.value = ''
       }
     }
   }
 
   outputWord() {
     this.quoteDisplayElement.innerHTML = ''
-    this.words.forEach(word => {
+    for (let i = 0; i < this.words.length; i++) {
+      const word = this.words[Math.floor(Math.random() * this.words.length)];
       const wordSpan = document.createElement('span')
       wordSpan.innerText = word 
       wordSpan.classList.add('m-2')
       wordSpan.classList.add('inline-block')
       this.quoteDisplayElement.appendChild(wordSpan)
-    })
+    }
     this.quoteInputElement.value = ''
   }
 
