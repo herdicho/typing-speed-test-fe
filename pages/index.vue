@@ -1,47 +1,36 @@
 <template>
-  <div class="container md mx-auto">
+  <div class="container mx-auto">
         <ScoreModal :isVisible="modalVisible" :score="user_score" @cancel="modalVisible = false"/>
-        
-        <div class="grid grid-cols-1 pt-24">
-            <h1 class="m-auto text-5xl font-mono mb-6"><strong> SPEED TYPING TEST </strong></h1>
+        <NavBarModal />
+                 
+        <div class="grid grid-cols-1 pt-10">
+            <h1 class="m-auto text-5xl font-mono mb-6 text-blue-500"><strong> SPEED TYPING TEST </strong></h1>
         </div> 
 
         <div class="grid grid-cols-3 pt-20">
-          <div class="h-auto w-auto mx-auto text-5xl font-bold" id="score">
+          <div class="h-auto w-auto mx-auto text-5xl font-bold text-blue-500" id="score">
             SCORE : 0
           </div>
-          <div class="h-auto w-auto mx-auto text-5xl font-bold">
+          <div class="h-auto w-auto mx-auto text-5xl font-bold text-blue-500">
             TIMER : {{timer}}
           </div>
           <div class="border h-auto w-auto border-black mx-auto">
           </div>
         </div>
     
-        <div class="grid grid-cols-1 pt-6 w-3/4 mx-auto h-20 mb-20">
-            <div class="grid justify-items-center bg-transparent border-4 border-black px-3 min-w-3/4"> 
+        <div class="grid grid-cols-1 pt-6 w-3/4 mx-auto h-20 mb-20 mt-10">
+            <div class="grid justify-items-center bg-transparent border-4 border-blue-500 px-3 min-w-3/4"> 
                 <div class="text-display m-auto text-md text-2xl text-gray-600 font-mono" id="textDisplay">  HOW FAST ARE YOU ?? </div>
             </div>
         </div>
-    
-        <!-- <div class="grid grid-cols-2 pt-6 w-2/6 mx-auto">
-            <div class="grid justify-items-center h-20 mx-8"> 
-                <input v-on:keyup="checkAnswer($event)" class="bg-transparent shadow appearance-none border-4 border-black rounded w-full py-2 px-3 text-gray-700 text-4xl leading-tight focus:outline-none focus:shadow-outline font-mono my-2" id="inputText" type="text">
-            </div>   
-
-            <div class="grid justify-items-center h-20 mx-8"> 
-              <button @click="startGame()" class="bg-transparent hover:bg-black text-black font-bold hover:text-white py-2 px-4 border-4 border-black hover:border-transparent rounded text-mono" id="startButton">
-                CLICK TO START !!!
-              </button>
-            </div>
-        </div> -->
 
         <div class="flex flex-row justify-center items-center">
           <div class="mx-8"> 
-                <input v-on:keyup="checkAnswer($event)" class="h-24 w-1/2 bg-transparent shadow appearance-none border-4 border-black rounded py-2 px-3 text-gray-700 text-4xl text-center leading-tight focus:outline-none focus:shadow-outline font-mono my-2" id="inputText" type="text">
+                <input v-on:keyup="checkAnswer($event)" class="h-24 w-1/2 bg-transparent shadow appearance-none border-4 border-blue-500 rounded py-2 px-3 text-gray-700 text-4xl text-center leading-tight focus:outline-none focus:shadow-outline font-mono my-2" id="inputText" type="text">
             </div>   
 
             <div class="mx-8"> 
-              <button @click="startGame()" class="h-20 w-30 bg-transparent hover:bg-black text-black font-bold hover:text-white py-2 px-4 border-4 border-black hover:border-transparent rounded text-mono" id="startButton">
+              <button @click="startGame()" class="h-20 w-30 bg-transparent hover:bg-blue-500 text-blue-500 font-bold hover:text-white py-2 px-4 border-4 border-blue-500 hover:border-transparent rounded text-mono" id="startButton">
                 CLICK TO START !!!
               </button>
             </div>
@@ -53,9 +42,11 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import ScoreModal from '~/components/ScoreModal.vue';
+import NavBarModal from '~/components/NavBarModal.vue';
 @Component({
     components: {
-      ScoreModal
+      ScoreModal,
+      NavBarModal,
     }
   })
 export default class Index extends Vue {
@@ -91,6 +82,8 @@ export default class Index extends Vue {
   global_index : number = 0
   modalVisible : boolean = false
 
+  isLoggedIn : boolean = false
+
   checkIsAllQuestionCorrect() {
     const arrayQuote = this.quoteDisplayElement.querySelectorAll('span')
     let is_all_correct = true
@@ -106,7 +99,7 @@ export default class Index extends Vue {
     }
   }
 
-  checkAnswer(event:any) {
+  checkAnswer(e : any) {
     const arrayQuote = this.quoteDisplayElement.querySelectorAll('span')[this.global_index]
     const arrayValue = this.quoteInputElement.value
     arrayQuote.classList.add('current-text')
@@ -114,6 +107,10 @@ export default class Index extends Vue {
     const word_question = arrayQuote.innerText
     const word_answer = arrayValue
     const word_span = arrayQuote
+
+    if (e.keyCode === 32) {
+      this.quoteInputElement.value = this.quoteInputElement.value.slice(0, -1)
+    }
 
     if (word_answer.length === word_question.length) {
       let is_correct = true
@@ -205,7 +202,7 @@ export default class Index extends Vue {
     }
   
     body {
-      background-color: blanchedalmond;
+      background-color: rgb(205, 237, 255);
     }
 
     .correct {
