@@ -18,12 +18,12 @@
             </div>  
           </div>  
           <div v-if="isWordLanguageActive" class="cursor-pointer border-t-2 text-white bg-blue-500 border-b-2 text-3xl font-bold border-blue-500">
-            <div class="m-4">
+            <div @click="getCurrentLanguageSetting()" class="m-4">
               WORD LANGUAGE
             </div>  
           </div> 
           <div v-else @click="isTimeActive=false, isWordLanguageActive=true" class="cursor-pointer border-t-2 text-blue-500 text-3xl font-bold border-blue-500">
-            <div class="m-4">
+            <div @click="getCurrentLanguageSetting()" class="m-4">
               WORD LANGUAGE
             </div>  
           </div>         
@@ -60,28 +60,28 @@
             </div>
           </div>   
           <div v-else class="h-full">
-            <!-- <div class="flex justify-between mx-auto h-1/2">
-              <button v-if="isThirtySecondActive" class="m-auto w-32 bg-blue-500 font-bold text-white py-4 px-4 border-4 border-blue-500 hover:border-transparent rounded text-mono">
+            <div class="flex justify-between mx-auto h-1/2">
+              <button v-if="isIndonesiaLanguageActive" class="m-auto w-32 bg-blue-500 font-bold text-white py-4 px-4 border-4 border-blue-500 hover:border-transparent rounded text-mono">
                 INDONESIA
               </button>
-              <button v-else @click="changeCurrentTimeSetting('30s')" class="m-auto w-32 bg-transparent hover:bg-blue-500 text-blue-500 font-bold hover:text-white py-4 px-4 border-4 border-blue-500 hover:border-transparent rounded text-mono">
+              <button v-else @click="changeCurrentLanguageSetting('Indonesia')" class="m-auto w-32 bg-transparent hover:bg-blue-500 text-blue-500 font-bold hover:text-white py-4 px-4 border-4 border-blue-500 hover:border-transparent rounded text-mono">
                 INDONESIA
               </button>
-              <button v-if="isOneMinuteActive" class="m-auto w-32 bg-blue-500 font-bold text-white py-4 px-4 border-4 border-blue-500 hover:border-transparent rounded text-mono">
+              <button v-if="isEnglishLanguageActive" class="m-auto w-32 bg-blue-500 font-bold text-white py-4 px-4 border-4 border-blue-500 hover:border-transparent rounded text-mono">
                 ENGLISH
               </button>
-              <button v-else @click="changeCurrentTimeSetting('1m')" class="m-auto w-32 bg-transparent hover:bg-blue-500 text-blue-500 font-bold hover:text-white py-4 px-4 border-4 border-blue-500 hover:border-transparent rounded text-mono">
+              <button v-else @click="changeCurrentLanguageSetting('English')" class="m-auto w-32 bg-transparent hover:bg-blue-500 text-blue-500 font-bold hover:text-white py-4 px-4 border-4 border-blue-500 hover:border-transparent rounded text-mono">
                 ENGLISH
               </button>
             </div>
             <div class="flex justify-center mx-auto h-1/2">
-              <button @click="getLanguageSetting()" class="mx-auto w-36 h-16 mt-6 bg-transparent hover:bg-red-500 text-blue-500 font-bold hover:text-white py-4 px-4 border-4 border-blue-500 hover:border-transparent rounded text-mono">
+              <button @click="getCurrentLanguageSetting()" class="mx-auto w-36 h-16 mt-6 bg-transparent hover:bg-red-500 text-blue-500 font-bold hover:text-white py-4 px-4 border-4 border-blue-500 hover:border-transparent rounded text-mono">
                 CANCEL
               </button>
-              <button @click="setLanguageSetting()" class="mx-auto w-36 h-16 mt-6 bg-transparent hover:bg-green-500 text-blue-500 font-bold hover:text-white py-4 px-4 border-4 border-blue-500 hover:border-transparent rounded text-mono">
+              <button @click="setCurrentLanguageSetting()" class="mx-auto w-36 h-16 mt-6 bg-transparent hover:bg-green-500 text-blue-500 font-bold hover:text-white py-4 px-4 border-4 border-blue-500 hover:border-transparent rounded text-mono">
                 SAVE
               </button>
-            </div> -->
+            </div>
           </div>   
         </div>
       </div>  
@@ -108,6 +108,8 @@ export default class Setting extends Vue {
   isThirtySecondActive : boolean = false
   isOneMinuteActive : boolean = false
   isTwoMinuteActive : boolean = false
+  isIndonesiaLanguageActive : boolean = false
+  isEnglishLanguageActive : boolean = false
   modalVisible : boolean = false
 
   set30SecondTimeToActive() : void {
@@ -128,6 +130,16 @@ export default class Setting extends Vue {
     this.isTwoMinuteActive = true
   }
 
+  setIndonesiaLanguageToActive() : void {
+    this.isIndonesiaLanguageActive = true
+    this.isEnglishLanguageActive = false
+  }
+
+  setEnglishLanguageToActive() : void {
+    this.isIndonesiaLanguageActive = false
+    this.isEnglishLanguageActive = true
+  }
+
   getCurrentTimeSetting() : void {
     const curTimeSetting : string | null = localStorage.getItem("currentTimeSetting")
 
@@ -144,6 +156,20 @@ export default class Setting extends Vue {
     }
   }
 
+  getCurrentLanguageSetting() : void {
+    const curLanguageSetting : string | null = localStorage.getItem("currentLanguageSetting")
+    console.log(curLanguageSetting)
+    if (curLanguageSetting === null) {
+      this.setIndonesiaLanguageToActive()
+    } else {
+      if (curLanguageSetting === "English") {
+        this.setEnglishLanguageToActive()
+      } else {
+        this.setIndonesiaLanguageToActive()
+      } 
+    }
+  }
+
   changeCurrentTimeSetting(time : string) : void {
     if (time === "30s") {
       this.set30SecondTimeToActive()
@@ -152,6 +178,14 @@ export default class Setting extends Vue {
     } else if (time === "2m") {
       this.set2MinuteTimeToActive()
     }
+  }
+
+  changeCurrentLanguageSetting(language : string) : void {
+    if (language === "Indonesia") {
+      this.setIndonesiaLanguageToActive()
+    } else if (language === "English") {
+      this.setEnglishLanguageToActive()
+    } 
   }
 
   setCurrentTimeSetting() : void {
@@ -166,10 +200,21 @@ export default class Setting extends Vue {
     this.modalVisible = true
   }
 
+  setCurrentLanguageSetting() : void {
+    if (this.isIndonesiaLanguageActive) {
+      localStorage.setItem("currentLanguageSetting", "Indonesia")
+    } else if (this.isEnglishLanguageActive) {
+      localStorage.setItem("currentLanguageSetting", "English")
+    } 
+
+    this.modalVisible = true
+  }
+
   mounted() {
     this.isTimeActive = true
     this.isWordLanguageActive = false
     this.getCurrentTimeSetting()
+    this.getCurrentLanguageSetting()
   }
 
 }
