@@ -1,42 +1,41 @@
 <template>
   <div class="container mx-auto">
-        <ScoreModal :isVisible="modalVisible" :score="user_score" @cancel="modalVisible = false"/>
-        <NavBarModal />
-                 
-        <div class="grid grid-cols-1 pt-10">
-            <h1 class="m-auto text-5xl font-mono mb-6 text-blue-500"><strong> SPEED TYPING TEST </strong></h1>
-        </div> 
+    <ScoreModal :isVisible="modalVisible" :score="user_score" @cancel="modalVisible = false"/>
+    <NavBarModal />
+              
+    <div class="grid grid-cols-1 pt-10">
+        <h1 class="m-auto text-5xl font-mono mb-6 text-blue-500"><strong> SPEED TYPING TEST </strong></h1>
+    </div> 
 
-        <div class="grid grid-cols-3 pt-20">
-          <div class="h-auto w-auto mx-auto text-5xl font-bold text-blue-500" id="score">
-            SCORE : 0
-          </div>
-          <div class="h-auto w-auto mx-auto text-5xl font-bold text-blue-500">
-            TIMER : {{timer}}
-          </div>
-          <div class="border h-auto w-auto border-black mx-auto">
-          </div>
-        </div>
-    
-        <div class="grid grid-cols-1 pt-6 w-3/4 mx-auto h-20 mb-20 mt-10">
-            <div class="grid justify-items-center bg-transparent border-4 border-blue-500 px-3 min-w-3/4"> 
-                <div class="text-display m-auto text-md text-2xl text-gray-600 font-mono" id="textDisplay">  HOW FAST ARE YOU ?? </div>
-            </div>
-        </div>
-
-        <div class="flex flex-row justify-center items-center">
-          <div class="mx-8"> 
-                <input v-on:keyup="checkAnswer($event)" class="h-24 w-1/2 bg-transparent shadow appearance-none border-4 border-blue-500 rounded py-2 px-3 text-gray-700 text-4xl text-center leading-tight focus:outline-none focus:shadow-outline font-mono my-2" id="inputText" type="text">
-            </div>   
-
-            <div class="mx-8"> 
-              <button @click="startGame()" class="h-20 w-30 bg-transparent hover:bg-blue-500 text-blue-500 font-bold hover:text-white py-2 px-4 border-4 border-blue-500 hover:border-transparent rounded text-mono" id="startButton">
-                CLICK TO START !!!
-              </button>
-            </div>
-        </div>
-        
+    <div class="grid grid-cols-3 pt-20">
+      <div class="h-auto w-auto mx-auto text-5xl font-bold text-blue-500" id="score">
+        SCORE : 0
+      </div>
+      <div class="h-auto w-auto mx-auto text-5xl font-bold text-blue-500">
+        TIMER : {{timer}}
+      </div>
+      <div class="border h-auto w-auto border-black mx-auto">
+      </div>
     </div>
+
+    <div class="grid grid-cols-1 pt-6 w-3/4 mx-auto h-20 mb-20 mt-10">
+        <div class="grid justify-items-center bg-transparent border-4 border-blue-500 px-3 min-w-3/4"> 
+            <div class="text-display m-auto text-md text-2xl text-gray-600 font-mono" id="textDisplay">  HOW FAST ARE YOU ?? </div>
+        </div>
+    </div>
+
+    <div class="flex flex-row justify-center items-center">
+      <div class="mx-8"> 
+            <input autocomplete="off" v-on:keyup="checkAnswer($event)" class="h-24 w-1/2 bg-transparent shadow appearance-none border-4 border-blue-500 rounded py-2 px-3 text-gray-700 text-4xl text-center leading-tight focus:outline-none focus:shadow-outline font-mono my-2" id="inputText" type="text">
+        </div>   
+
+        <div class="mx-8"> 
+          <button @click="startGame()" class="h-20 w-30 bg-transparent hover:bg-blue-500 text-blue-500 font-bold hover:text-white py-2 px-4 border-4 border-blue-500 hover:border-transparent rounded text-mono" id="startButton">
+            CLICK TO START !!!
+          </button>
+        </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -197,24 +196,24 @@ export default class Index extends Vue {
 </script>
 
 <style>
-    * {
-        box-sizing: border-box;
-    }
+  * {
+      box-sizing: border-box;
+  }
+
+  body {
+    background-color: rgb(205, 237, 255);
+  }
+
+  .correct {
+    color: green;
+  }
   
-    body {
-      background-color: rgb(205, 237, 255);
-    }
+  .incorrect {
+    color: red;
+    text-decoration: underline;
+  }
 
-    .correct {
-      color: green;
-    }
-    
-    .incorrect {
-      color: red;
-      text-decoration: underline;
-    }
-
-    .current-text {
-      background-color: lightblue;
-    }
+  .current-text {
+    background-color: lightblue;
+  }
 </style>

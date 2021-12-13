@@ -4,15 +4,17 @@
       <div class="flex justify-between">
         <div class="flex space-x-7">
           <div>
-            <a href="#" class="flex items-center py-4 px-2">
+            <NuxtLink to="/" class="flex items-center py-4 px-2">
               <img src="/logo.png" class="w-64"/>
-            </a>
+            </NuxtLink>
           </div>
         </div>
         <div class="flex items-center space-x-3">
-          <button class="bg-transparent h-12 hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 border-4 border-blue-500 hover:border-transparent rounded text-mono">
-            Setting
-          </button>
+          <NuxtLink to="/setting">
+            <button class="bg-transparent h-12 hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 border-4 border-blue-500 hover:border-transparent rounded text-mono">
+              Setting
+            </button>
+          </NuxtLink>
           <button v-if="isLoggedIn" class="bg-transparent h-12 hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 border-4 border-blue-500 hover:border-transparent rounded text-mono">
             Dashboard
           </button>
