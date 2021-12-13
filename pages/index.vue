@@ -50,7 +50,7 @@ import NavBarModal from '~/components/NavBarModal.vue';
   })
 export default class Index extends Vue {
 
-  words : Array<string> = [
+  indonesiaWords : Array<string> = [
     'karena',
     'tidak',
     'bentuk',
@@ -65,12 +65,27 @@ export default class Index extends Vue {
     'tulis'
   ]
 
+  englishWords : Array<string> = [
+    'because',
+    'not',
+    'form',
+    'can',
+    'answer',
+    'animal',
+    'plant',
+    'flower',
+    'eat',
+    'drink',
+    'read',
+    'write'
+  ]
+
   scoreElement : any = ""
   quoteDisplayElement : any = ""
   quoteInputElement : any = ""
   startButtonElement : any = ""
 
-  time : number = 50
+  time : number = 0
   timer : number = 0  
   word_span : string = ""
   word_question : string = ""
@@ -140,8 +155,11 @@ export default class Index extends Vue {
 
   outputWord() {
     this.quoteDisplayElement.innerHTML = ''
-    for (let i = 0; i < this.words.length; i++) {
-      const word = this.words[Math.floor(Math.random() * this.words.length)];
+    const languageSetting = localStorage.getItem("currentLanguageSetting") || null
+    const words = (languageSetting === "English") ? this.englishWords : this.indonesiaWords;  
+    for (let i = 0; i < words.length; i++) {
+      const languageSetting = localStorage.getItem("currentLanguageSetting") || null
+      const word = (languageSetting === "English") ? this.englishWords[Math.floor(Math.random() * this.indonesiaWords.length)] : this.indonesiaWords[Math.floor(Math.random() * this.englishWords.length)];
       const wordSpan = document.createElement('span')
       wordSpan.innerText = word 
       wordSpan.classList.add('m-2')
@@ -152,6 +170,7 @@ export default class Index extends Vue {
   }
 
   startTimer() {
+    this.time = this.getTime()
     this.timer = this.time
     const timer = setInterval(() => {
       this.time -= 1
@@ -167,7 +186,7 @@ export default class Index extends Vue {
 
   resetGame() {
     this.timer = 0
-    this.time = 50
+    this.time = this.getTime()
     this.score = 0
     this.scoreElement.innerText = "SCORE : " + this.score
     this.quoteInputElement.value = ''
@@ -175,6 +194,16 @@ export default class Index extends Vue {
     this.global_index = 0
     this.quoteInputElement.disabled = true
     this.startButtonElement.disabled = false
+  }
+
+  getTime() {
+    const timeSetting = localStorage.getItem("currentTimeSetting") || null
+    if (timeSetting === "1m" )
+      return 60
+    else if (timeSetting === "2m" )
+      return 120
+    else
+      return 30
   }
 
   startGame() {
