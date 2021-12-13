@@ -14,7 +14,8 @@
       <div class="h-auto w-auto mx-auto text-5xl font-bold text-blue-500">
         TIMER : {{timer}}
       </div>
-      <div class="border h-auto w-auto border-black mx-auto">
+      <div class="h-auto w-auto mx-auto text-5xl font-bold text-blue-500">
+        WPM : {{wpm}}
       </div>
     </div>
 
@@ -93,6 +94,7 @@ export default class Index extends Vue {
 
   score : number = 0 
   user_score : number = 0
+  wpm : number = 0
   global_index : number = 0
   modalVisible : boolean = false
 
@@ -175,6 +177,7 @@ export default class Index extends Vue {
     const timer = setInterval(() => {
       this.time -= 1
       this.timer = this.time
+      this.wpm = this.calculateWPM(this.time)
       if (this.time == 0) {
         this.user_score = this.score
         clearInterval(timer)
@@ -188,12 +191,22 @@ export default class Index extends Vue {
     this.timer = 0
     this.time = this.getTime()
     this.score = 0
+    this.wpm = 0
     this.scoreElement.innerText = "SCORE : " + this.score
     this.quoteInputElement.value = ''
     this.quoteDisplayElement.innerHTML = ''
     this.global_index = 0
     this.quoteInputElement.disabled = true
     this.startButtonElement.disabled = false
+  }
+
+  calculateWPM(time : number) : number {
+    const currentScore = this.score
+    const gameTime = this.getTime()
+    const currentTime = gameTime - time
+    const wpm = currentScore / (currentTime / 60)
+
+    return Math.round(wpm * 100) / 100
   }
 
   getTime() {
